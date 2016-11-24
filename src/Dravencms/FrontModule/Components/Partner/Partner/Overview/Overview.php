@@ -2,8 +2,8 @@
 
 namespace Dravencms\FrontModule\Components\Partner\Partner\Overview;
 
-use Dravencms\Components\BaseControl;
-use Dravencms\Components\BaseFormFactory;
+use Dravencms\Components\BaseControl\BaseControl;
+use Dravencms\Components\BaseForm\BaseFormFactory;
 use Dravencms\Model\Partner\Repository\PartnerRepository;
 use Salamek\Cms\ICmsActionOption;
 

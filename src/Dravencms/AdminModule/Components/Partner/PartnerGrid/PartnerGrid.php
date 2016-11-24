@@ -21,11 +21,11 @@
 
 namespace Dravencms\AdminModule\Components\Partner\PartnerGrid;
 
-use Dravencms\Components\BaseGridFactory;
+use Dravencms\Components\BaseControl\BaseControl;
+use Dravencms\Components\BaseGrid\BaseGridFactory;
 use Dravencms\Model\Partner\Entities\Partner;
 use Dravencms\Model\Partner\Repository\PartnerRepository;
 use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Control;
 use Nette\Utils\Html;
 use Salamek\Files\ImagePipe;
 
@@ -34,7 +34,7 @@ use Salamek\Files\ImagePipe;
  *
  * @author Adam Schubert <adam.schubert@sg1-game.net>
  */
-class PartnerGrid extends Control
+class PartnerGrid extends BaseControl
 {
 
     /** @var BaseGridFactory */

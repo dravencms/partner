@@ -20,7 +20,8 @@
 
 namespace Dravencms\AdminModule\Components\Partner\PartnerForm;
 
-use Dravencms\Components\BaseFormFactory;
+use Dravencms\Components\BaseControl\BaseControl;
+use Dravencms\Components\BaseForm\BaseFormFactory;
 use Dravencms\Model\Locale\Repository\LocaleRepository;
 use Dravencms\File\File;
 use Dravencms\Model\Partner\Entities\Partner;
@@ -35,7 +36,7 @@ use Nette\Application\UI\Form;
  *
  * @author Adam Schubert <adam.schubert@sg1-game.net>
  */
-class PartnerForm extends Control
+class PartnerForm extends BaseControl
 {
     /** @var BaseFormFactory */
     private $baseFormFactory;
