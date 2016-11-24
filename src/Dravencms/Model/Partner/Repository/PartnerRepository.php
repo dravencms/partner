@@ -5,7 +5,7 @@
 
 namespace Dravencms\Model\Partner\Repository;
 
-use App\Model\BaseRepository;
+use Dravencms\Locale\TLocalizedRepository;
 use Dravencms\Model\Partner\Entities\Partner;
 use Gedmo\Translatable\TranslatableListener;
 use Kdyby\Doctrine\EntityManager;
@@ -15,8 +15,10 @@ use Salamek\Cms\ICmsActionOption;
 use Salamek\Cms\ICmsComponentRepository;
 use Salamek\Cms\Models\ILocale;
 
-class PartnerRepository extends BaseRepository implements ICmsComponentRepository
+class PartnerRepository implements ICmsComponentRepository
 {
+    use TLocalizedRepository;
+
     /** @var \Kdyby\Doctrine\EntityRepository */
     private $partnerRepository;
 
