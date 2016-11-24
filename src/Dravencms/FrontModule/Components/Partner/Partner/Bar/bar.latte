@@ -1,0 +1,23 @@
+<section class="awards">
+    <div id="awards-carousel" class="awards-carousel carousel slide">
+        <div class="carousel-inner">
+            {var $blocks = array_chunk($overview, 6)}
+            <div n:foreach="$blocks AS $block" class="item {if $iterator->isFirst()}active{/if}">
+                <ul class="logos">
+                    <li n:foreach="$block AS $item" class="col-md-2 col-sm-2 col-xs-4">
+                        {if $item->getUrl()}<a href="{$item->getUrl()}">{/if}
+                            <img class="img-responsive" n:img="$item->getStructureFile(), '100x100', 'fit_exact'"  alt="{$item->getName()}" />
+                        {if $item->getUrl()}</a>{/if}
+                    </li>
+                </ul><!--//slides-->
+            </div><!--//item-->
+        </div><!--//carousel-inner-->
+        <a class="left carousel-control" href="index.html#awards-carousel" data-slide="prev">
+            <i class="fa fa-angle-left"></i>
+        </a>
+        <a class="right carousel-control" href="index.html#awards-carousel" data-slide="next">
+            <i class="fa fa-angle-right"></i>
+        </a>
+
+    </div>
+</section>

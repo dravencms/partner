@@ -1,0 +1,5 @@
+{if $main}
+    {if $main->getUrl()}<a href="{$main->getUrl()}">{/if}
+        <img class="img-responsive" n:img="$main->getStructureFile(), '261x144', 'fit_exact'" alt="{$main->getName()}">
+    {if $main->getUrl()}</a>{/if}
+{/if}
