@@ -21,10 +21,11 @@
 namespace Dravencms\AdminModule\Components\Partner\PartnerForm;
 
 use Dravencms\Components\BaseFormFactory;
-use App\Model\Locale\Repository\LocaleRepository;
+use Dravencms\Model\Locale\Repository\LocaleRepository;
+use Dravencms\File\File;
 use Dravencms\Model\Partner\Entities\Partner;
 use Dravencms\Model\Partner\Repository\PartnerRepository;
-use App\Model\File\Repository\StructureFileRepository;
+use Dravencms\Model\File\Repository\StructureFileRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
@@ -51,6 +52,9 @@ class PartnerForm extends Control
     /** @var LocaleRepository */
     private $localeRepository;
 
+    /** @var File */
+    private $file;
+
     /** @var Partner|null */
     private $partner = null;
 
@@ -64,6 +68,7 @@ class PartnerForm extends Control
      * @param PartnerRepository $partnerRepository
      * @param StructureFileRepository $structureFileRepository
      * @param LocaleRepository $localeRepository
+     * @param File $file
      * @param Partner|null $partner
      */
     public function __construct(
@@ -72,6 +77,7 @@ class PartnerForm extends Control
         PartnerRepository $partnerRepository,
         StructureFileRepository $structureFileRepository,
         LocaleRepository $localeRepository,
+        File $file,
         Partner $partner = null
     ) {
         parent::__construct();
@@ -83,6 +89,7 @@ class PartnerForm extends Control
         $this->partnerRepository = $partnerRepository;
         $this->structureFileRepository = $structureFileRepository;
         $this->localeRepository = $localeRepository;
+        $this->file = $file;
 
 
         if ($this->partner) {
@@ -217,6 +224,7 @@ class PartnerForm extends Control
     public function render()
     {
         $template = $this->template;
+        $template->fileSelectorPath = $this->file->getFileSelectorPath();
         $template->activeLocales = $this->localeRepository->getActive();
         $template->setFile(__DIR__ . '/PartnerForm.latte');
         $template->render();

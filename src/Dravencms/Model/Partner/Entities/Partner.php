@@ -1,7 +1,7 @@
 <?php
 namespace Dravencms\Model\Partner\Entities;
 
-use App\Model\File\Entities\StructureFile;
+use Dravencms\Model\File\Entities\StructureFile;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
@@ -71,7 +71,7 @@ class Partner extends Nette\Object
 
     /**
      * @var StructureFile
-     * @ORM\ManyToOne(targetEntity="\App\Model\File\Entities\StructureFile", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="\Dravencms\Model\File\Entities\StructureFile", inversedBy="articles")
      * @ORM\JoinColumn(name="structure_file_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $structureFile;
