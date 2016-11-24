@@ -19,11 +19,11 @@
  * MA 02110-1301  USA
  */
 
-namespace Dravencms\AdminModule\Components\Partner;
+namespace Dravencms\AdminModule\Components\Partner\PartnerGrid;
 
 use Dravencms\Components\BaseGridFactory;
-use App\Model\Partner\Entities\Partner;
-use App\Model\Partner\Repository\PartnerRepository;
+use Dravencms\Model\Partner\Entities\Partner;
+use Dravencms\Model\Partner\Repository\PartnerRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Utils\Html;

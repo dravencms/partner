@@ -7,11 +7,11 @@
 
 namespace Dravencms\AdminModule\PartnerModule;
 
-use Dravencms\AdminModule\Components\Partner\PartnerFormFactory;
-use Dravencms\AdminModule\Components\Partner\PartnerGridFactory;
+use Dravencms\AdminModule\Components\Partner\PartnerForm\PartnerFormFactory;
+use Dravencms\AdminModule\Components\Partner\PartnerGrid\PartnerGridFactory;
 use Dravencms\AdminModule\SecuredPresenter;
-use App\Model\Partner\Entities\Partner;
-use App\Model\Partner\Repository\PartnerRepository;
+use Dravencms\Model\Partner\Entities\Partner;
+use Dravencms\Model\Partner\Repository\PartnerRepository;
 
 /**
  * Description of PartnerPresenter

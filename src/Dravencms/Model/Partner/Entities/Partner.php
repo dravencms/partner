@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Partner\Entities;
+namespace Dravencms\Model\Partner\Entities;
 
 use App\Model\File\Entities\StructureFile;
 use Doctrine\ORM\Mapping as ORM;

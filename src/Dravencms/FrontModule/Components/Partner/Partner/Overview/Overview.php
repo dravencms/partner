@@ -1,10 +1,10 @@
 <?php
 
-namespace Dravencms\FrontModule\Components\Partner\Partner;
+namespace Dravencms\FrontModule\Components\Partner\Partner\Overview;
 
 use Dravencms\Components\BaseControl;
 use Dravencms\Components\BaseFormFactory;
-use App\Model\Partner\Repository\PartnerRepository;
+use Dravencms\Model\Partner\Repository\PartnerRepository;
 use Salamek\Cms\ICmsActionOption;
 
 class Overview extends BaseControl

@@ -1,0 +1,3 @@
+- Dravencms\FrontModule\Components\Partner\Partner\Overview\OverviewFactory
+- Dravencms\FrontModule\Components\Partner\Partner\Main\MainFactory
+- Dravencms\FrontModule\Components\Partner\Partner\Bar\BarFactory

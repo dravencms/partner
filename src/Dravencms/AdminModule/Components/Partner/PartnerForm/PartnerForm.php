@@ -18,12 +18,12 @@
  * MA 02110-1301  USA
  */
 
-namespace Dravencms\AdminModule\Components\Partner;
+namespace Dravencms\AdminModule\Components\Partner\PartnerForm;
 
 use Dravencms\Components\BaseFormFactory;
 use App\Model\Locale\Repository\LocaleRepository;
-use App\Model\Partner\Entities\Partner;
-use App\Model\Partner\Repository\PartnerRepository;
+use Dravencms\Model\Partner\Entities\Partner;
+use Dravencms\Model\Partner\Repository\PartnerRepository;
 use App\Model\File\Repository\StructureFileRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
