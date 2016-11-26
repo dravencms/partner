@@ -29,7 +29,7 @@
     "dravencms": {
       "configuration": {
         "extensions": {
-          "timeline": "Dravencms\\Partner\\DI\\PartnerExtension"
+          "partner": "Dravencms\\Partner\\DI\\PartnerExtension"
         }
       },
       "scripts": {
