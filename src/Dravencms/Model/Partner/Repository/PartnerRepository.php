@@ -52,7 +52,15 @@ class PartnerRepository implements ICmsComponentRepository
     {
         return $this->partnerRepository->findBy(['id' => $id]);
     }
-    
+
+    /**
+     * @return array|mixed
+     */
+    public function getActive()
+    {
+        return $this->partnerRepository->findBy(['isActive' => true]);
+    }
+
     /**
      * @param $name
      * @param ILocale $locale
