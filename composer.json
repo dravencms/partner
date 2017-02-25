@@ -15,7 +15,9 @@
     }
   ],
   "require": {
-    "dravencms/file": "@dev"
+    "dravencms/file": "@dev",
+    "dravencms/admin": "@dev",
+    "dravencms/structure": "@dev"
   },
   "require-dev": {
     "nette/tester": "@dev"
