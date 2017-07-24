@@ -15,10 +15,8 @@ use Salamek\Cms\ICmsActionOption;
 use Salamek\Cms\ICmsComponentRepository;
 use Salamek\Cms\Models\ILocale;
 
-class PartnerRepository implements ICmsComponentRepository
+class PartnerRepository
 {
-    use TLocalizedRepository;
-
     /** @var \Kdyby\Doctrine\EntityRepository */
     private $partnerRepository;
 
@@ -144,53 +142,5 @@ class PartnerRepository implements ICmsComponentRepository
     {
         $parameters['isActive'] = $isActive;
         return $this->partnerRepository->findOneBy($parameters);
-    }
-
-    /**
-     * @param string $componentAction
-     * @return ICmsActionOption[]
-     */
-    public function getActionOptions($componentAction)
-    {
-        switch ($componentAction)
-        {
-            case 'Main':
-                $return = [];
-                /** @var Partner $partner */
-                foreach ($this->partnerRepository->findBy(['isActive' => true]) AS $partner) {
-                    $return[] = new CmsActionOption($partner->getName(), ['id' => $partner->getId()]);
-                }
-                break;
-
-            case 'Overview':
-            case 'Bar':
-                return null;
-                break;
-
-            default:
-                return false;
-                break;
-        }
-        
-
-        return $return;
-    }
-
-    /**
-     * @param string $componentAction
-     * @param array $parameters
-     * @param ILocale $locale
-     * @return null|CmsActionOption
-     */
-    public function getActionOption($componentAction, array $parameters, ILocale $locale)
-    {
-        $found = $this->findTranslatedOneBy($this->partnerRepository, $locale, $parameters + ['isActive' => true]);
-
-        if ($found)
-        {
-            return new CmsActionOption(($found->getLead() ? $found->getLead() . ' ' : '') . $found->getName(), $parameters);
-        }
-
-        return null;
     }
 }
