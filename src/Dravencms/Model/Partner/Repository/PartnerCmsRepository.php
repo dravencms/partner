@@ -61,10 +61,10 @@ class PartnerCmsRepository implements ICmsComponentRepository
      * @param ILocale $locale
      * @return null|CmsActionOption
      */
-    public function getActionOption($componentAction, array $parameters, ILocale $locale)
+    public function getActionOption($componentAction, array $parameters)
     {
-        $found = $this->partnerRepository->findTranslatedOneBy($this->partnerRepository, $locale, $parameters + ['isActive' => true]);
-
+        //$found = $this->partnerRepository->findTranslatedOneBy($this->partnerRepository, $locale, $parameters + ['isActive' => true]);
+        $found = null; //!FIXME
         if ($found)
         {
             return new CmsActionOption(($found->getLead() ? $found->getLead() . ' ' : '') . $found->getName(), $parameters);
