@@ -8,7 +8,7 @@ The best way to install dravencms/partner is using  [Composer](http://getcompose
 
 
 ```sh
-$ composer require dravencms/partner:@dev
+$ composer require dravencms/partner
 ```
 
 Then you have to register extension in `config.neon`.
