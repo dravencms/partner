@@ -57,7 +57,7 @@ class PartnerPresenter extends SecuredPresenter
 
             $this->partner = $partner;
 
-            $this->template->h1 = sprintf('Edit partner „%s“', $partner->getName());
+            $this->template->h1 = sprintf('Edit partner „%s“', $partner->getIdentifier());
         } else {
             $this->template->h1 = 'New partner';
         }

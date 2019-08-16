@@ -73,16 +73,17 @@ class PartnerGrid extends BaseControl
 
     /**
      * @param $name
-     * @return \Dravencms\Components\BaseGrid
+     * @return \Dravencms\Components\BaseGrid\BaseGrid
      */
     public function createComponentGrid($name)
     {
         $grid = $this->baseGridFactory->create($this, $name);
 
-        $grid->setModel($this->partnerRepository->getPartnerQueryBuilder());
+        $grid->setDataSource($this->partnerRepository->getPartnerQueryBuilder());
 
         $grid->addColumnText('name', 'Name')
-            ->setCustomRender(function ($row) use($grid){
+            ->setAlign('center')
+            ->setRenderer(function ($row) use($grid){
                 /** @var Partner $row */
                 if ($haveImage = $row->getStructureFile()) {
                     $img = Html::el('img');
@@ -91,60 +92,43 @@ class PartnerGrid extends BaseControl
                     $img = '';
                 }
 
-                return $img . Html::el('br') . $row->getName();
-            })
-            ->setFilterText()
-            ->setSuggestion();
+                $container = Html::el('div');
+                $container->addHtml($img);
+                $container->addHtml('<br>');
+                $container->addText($row->getIdentifier());
 
-        $grid->getColumn('name')->cellPrototype->class[] = 'center';
+                return $container;
+            })
+            ->setFilterText();
 
 
         $grid->addColumnBoolean('isActive', 'Active');
         $grid->addColumnBoolean('isMain', 'Is main');
 
-        $grid->addColumnNumber('position', 'Position')
-            ->setFilterNumber()
-            ->setSuggestion();
-
-        $grid->getColumn('position')->cellPrototype->class[] = 'center';
+        $grid->addColumnPosition('position', 'Position', 'up!', 'down!');
 
         if ($this->presenter->isAllowed('partner', 'edit')) {
-            $grid->addActionHref('edit', 'Upravit')
-                ->setIcon('pencil');
+            $grid->addAction('edit', '')
+                ->setIcon('pencil')
+                ->setTitle('Upravit')
+                ->setClass('btn btn-xs btn-primary');
         }
 
         if ($this->presenter->isAllowed('partner', 'delete')) {
-            $grid->addActionHref('delete', 'Smazat', 'delete!')
-                ->setCustomHref(function($row){
-                    return $this->link('delete!', $row->getId());
-                })
-                ->setIcon('trash-o')
-                ->setConfirm(function ($row) {
-                    return ['Opravdu chcete smazat partnera %s ?', $row->getName()];
-                });
-
-
-            $operations = ['delete' => 'Smazat'];
-            $grid->setOperation($operations, [$this, 'gridOperationsHandler'])
-                ->setConfirm('delete', 'Opravu chcete smazat %i partneru ?');
+            $grid->addAction('delete', '', 'delete!')
+                ->setIcon('trash')
+                ->setTitle('Smazat')
+                ->setClass('btn btn-xs btn-danger ajax')
+                ->setConfirm('Do you really want to delete row %s?', 'identifier');
+            $grid->addGroupAction('Smazat')->onSelect[] = [$this, 'handleDelete'];
         }
-        $grid->setExport();
+
+        $grid->addExportCsvFiltered('Csv export (filtered)', 'acl_resource_filtered.csv')
+            ->setTitle('Csv export (filtered)');
+        $grid->addExportCsv('Csv export', 'acl_resource_all.csv')
+            ->setTitle('Csv export');
 
         return $grid;
-    }
-
-    /**
-     * @param $action
-     * @param $ids
-     */
-    public function gridOperationsHandler($action, $ids)
-    {
-        switch ($action)
-        {
-            case 'delete':
-                $this->handleDelete($ids);
-                break;
-        }
     }
 
     /**
@@ -162,6 +146,18 @@ class PartnerGrid extends BaseControl
         $this->entityManager->flush();
 
         $this->onDelete();
+    }
+
+    public function handleUp($id)
+    {
+        $menuItem = $this->partnerRepository->getOneById($id);
+        $this->partnerRepository->moveUp($menuItem, 1);
+    }
+
+    public function handleDown($id)
+    {
+        $menuItem = $this->partnerRepository->getOneById($id);
+        $this->partnerRepository->moveDown($menuItem, 1);
     }
 
     public function render()

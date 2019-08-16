@@ -60,30 +60,25 @@ class PartnerRepository
     }
 
     /**
-     * @param $name
-     * @param ILocale $locale
+     * @param $identifier
      * @param Partner|null $partnerIgnore
-     * @return mixed
+     * @return Partner|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function isNameFree($name, ILocale $locale, Partner $partnerIgnore = null)
+    public function isIdentifierFree($identifier, Partner $partnerIgnore = null)
     {
-        $qb = $this->partnerRepository->createQueryBuilder('a')
-            ->select('a')
-            ->where('a.name = :name')
+        $qb = $this->partnerRepository->createQueryBuilder('p')
+            ->select('p')
+            ->where('p.identifier = :identifier')
             ->setParameters([
-                'name' => $name
+                'identifier' => $identifier
             ]);
-
         if ($partnerIgnore)
         {
-            $qb->andWhere('a != :partnerIgnore')
+            $qb->andWhere('p != :partnerIgnore')
                 ->setParameter('partnerIgnore', $partnerIgnore);
         }
-
         $query = $qb->getQuery();
-        $query->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $locale->getLanguageCode());
-        
         return (is_null($query->getOneOrNullResult()));
     }
 
@@ -117,7 +112,7 @@ class PartnerRepository
     }
 
     /**
-     * @return mixed|null|Partner
+     * @return Partner[]
      */
     public function getMain()
     {
@@ -133,14 +128,11 @@ class PartnerRepository
     }
 
     /**
-     * @param bool $isActive
      * @param array $parameters
-     * @return Partner
-     * @deprecated
+     * @return Partner|null
      */
-    public function getOneByActiveAndParameters($isActive = true, array $parameters = [])
+    public function getOneByParameters(array $parameters = [])
     {
-        $parameters['isActive'] = $isActive;
         return $this->partnerRepository->findOneBy($parameters);
     }
 }

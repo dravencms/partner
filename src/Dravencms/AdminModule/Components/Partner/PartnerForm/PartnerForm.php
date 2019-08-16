@@ -23,10 +23,13 @@ namespace Dravencms\AdminModule\Components\Partner\PartnerForm;
 use Dravencms\Components\BaseControl\BaseControl;
 use Dravencms\Components\BaseForm\BaseFormFactory;
 use Dravencms\Model\Locale\Repository\LocaleRepository;
+use Dravencms\Locale\CurrentLocaleResolver;
 use Dravencms\File\File;
 use Dravencms\Model\Partner\Entities\Partner;
+use Dravencms\Model\Partner\Entities\PartnerTranslation;
 use Dravencms\Model\Partner\Repository\PartnerRepository;
 use Dravencms\Model\File\Repository\StructureFileRepository;
+use Dravencms\Model\Partner\Repository\PartnerTranslationRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
@@ -47,6 +50,9 @@ class PartnerForm extends BaseControl
     /** @var PartnerRepository */
     private $partnerRepository;
 
+    /** @var PartnerTranslationRepository */
+    private $partnerTranslationRepository;
+
     /** @var StructureFileRepository */
     private $structureFileRepository;
 
@@ -55,6 +61,9 @@ class PartnerForm extends BaseControl
 
     /** @var File */
     private $file;
+
+    /** @var \Dravencms\Model\Locale\Entities\Locale|null */
+    private $currentLocale;
 
     /** @var Partner|null */
     private $partner = null;
@@ -76,8 +85,10 @@ class PartnerForm extends BaseControl
         BaseFormFactory $baseFormFactory,
         EntityManager $entityManager,
         PartnerRepository $partnerRepository,
+        PartnerTranslationRepository $partnerTranslationRepository,
         StructureFileRepository $structureFileRepository,
         LocaleRepository $localeRepository,
+        CurrentLocaleResolver $currentLocaleResolver,
         File $file,
         Partner $partner = null
     ) {
@@ -88,7 +99,9 @@ class PartnerForm extends BaseControl
         $this->baseFormFactory = $baseFormFactory;
         $this->entityManager = $entityManager;
         $this->partnerRepository = $partnerRepository;
+        $this->partnerTranslationRepository = $partnerTranslationRepository;
         $this->structureFileRepository = $structureFileRepository;
+        $this->currentLocale = $currentLocaleResolver->getCurrentLocale();
         $this->localeRepository = $localeRepository;
         $this->file = $file;
 
@@ -96,31 +109,23 @@ class PartnerForm extends BaseControl
         if ($this->partner) {
 
             $defaults = [
-                'name' => $this->partner->getName(),
+                'identifier' => $this->partner->getIdentifier(),
                 'url' => $this->partner->getUrl(),
-                'description' => $this->partner->getDescription(),
                 'structureFile' => ($this->partner->getStructureFile() ? $this->partner->getStructureFile()->getId() : null),
                 'position' => $this->partner->getPosition(),
                 'isActive' => $this->partner->isActive(),
                 'isMain' => $this->partner->isMain()
             ];
 
-            $repository = $this->entityManager->getRepository('Gedmo\Translatable\Entity\Translation');
-            $defaults += $repository->findTranslations($this->partner);
-
-            $defaultLocale = $this->localeRepository->getDefault();
-            if ($defaultLocale) {
-                $defaults[$defaultLocale->getLanguageCode()]['name'] = $this->partner->getName();
-                $defaults[$defaultLocale->getLanguageCode()]['url'] = $this->partner->getUrl();
-                $defaults[$defaultLocale->getLanguageCode()]['description'] = $this->partner->getDescription();
+            foreach ($this->partner->getTranslations() AS $translation)
+            {
+                $defaults[$translation->getLocale()->getLanguageCode()]['name'] = $translation->getName();
+                $defaults[$translation->getLocale()->getLanguageCode()]['description'] = $translation->getDescription();
             }
-
         }
         else{
             $defaults = [
-                'isActive' => true,
-                'isShowName' => true,
-                'isAutoDetectTags' => true
+                'isActive' => true
             ];
         }
 
@@ -133,15 +138,16 @@ class PartnerForm extends BaseControl
 
         foreach ($this->localeRepository->getActive() AS $activeLocale) {
             $container = $form->addContainer($activeLocale->getLanguageCode());
-
             $container->addText('name')
                 ->setRequired('Please enter partner name.')
                 ->addRule(Form::MAX_LENGTH, 'Partner name is too long.', 255);
-
-            $container->addText('url');
-
-            $container->addTextarea('description');
+            $container->addTextArea('description');
         }
+
+        $form->addText('identifier')
+            ->setRequired('Please enter identifier');
+
+        $form->addText('url');
 
         $form->addText('structureFile');
 
@@ -165,8 +171,14 @@ class PartnerForm extends BaseControl
     public function editFormValidate(Form $form)
     {
         $values = $form->getValues();
+
+        if (!$this->partnerRepository->isIdentifierFree($values->identifier, $this->partner)) {
+            $form->addError('Tento identifier je již zabrán.');
+        }
+
+
         foreach ($this->localeRepository->getActive() AS $activeLocale) {
-            if (!$this->partnerRepository->isNameFree($values->{$activeLocale->getLanguageCode()}->name, $activeLocale, $this->partner)) {
+            if (!$this->partnerTranslationRepository->isNameFree($values->{$activeLocale->getLanguageCode()}->name, $activeLocale, $this->partner)) {
                 $form->addError('Tento název je již zabrán.');
             }
         }
@@ -195,28 +207,42 @@ class PartnerForm extends BaseControl
 
         if ($this->partner) {
             $partner = $this->partner;
-            /*$partner->setName($values->name);
-            $partner->setUrl($values->url);
-            $partner->setDescription($values->description);*/
+            $partner->setIdentifier($values->identifier);
             $partner->setStructureFile($structureFile);
             $partner->setIsActive($values->isActive);
             $partner->setIsMain($values->isMain);
             $partner->setPosition($values->position);
         } else {
-            $defaultLocale = $this->localeRepository->getDefault();
-            $partner = new Partner($values->{$defaultLocale->getLanguageCode()}->name, $values->{$defaultLocale->getLanguageCode()}->url, $values->{$defaultLocale->getLanguageCode()}->description, $values->isActive, $values->isMain, $structureFile);
-        }
-
-        $repository = $this->entityManager->getRepository('Gedmo\\Translatable\\Entity\\Translation');
-
-        foreach ($this->localeRepository->getActive() AS $activeLocale) {
-            $repository->translate($partner, 'name', $activeLocale->getLanguageCode(), $values->{$activeLocale->getLanguageCode()}->name)
-                ->translate($partner, 'url', $activeLocale->getLanguageCode(), $values->{$activeLocale->getLanguageCode()}->url)
-                ->translate($partner, 'description', $activeLocale->getLanguageCode(), $values->{$activeLocale->getLanguageCode()}->description);
+            $partner = new Partner(
+                $values->identifier,
+                $values->url,
+                $values->isActive,
+                $values->isMain,
+                $structureFile
+            );
         }
 
         $this->entityManager->persist($partner);
 
+        $this->entityManager->flush();
+
+        foreach ($this->localeRepository->getActive() AS $activeLocale) {
+            if ($partnerTranslation = $this->partnerTranslationRepository->getTranslation($partner, $activeLocale))
+            {
+                $partnerTranslation->setName($values->{$activeLocale->getLanguageCode()}->name);
+                $partnerTranslation->setDescription($values->{$activeLocale->getLanguageCode()}->description);
+            }
+            else
+            {
+                $partnerTranslation = new PartnerTranslation(
+                    $partner,
+                    $activeLocale,
+                    $values->{$activeLocale->getLanguageCode()}->name,
+                    $values->{$activeLocale->getLanguageCode()}->description
+                );
+            }
+            $this->entityManager->persist($partnerTranslation);
+        }
         $this->entityManager->flush();
 
         $this->onSuccess();

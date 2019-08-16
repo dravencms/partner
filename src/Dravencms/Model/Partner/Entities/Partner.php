@@ -1,6 +1,7 @@
 <?php
 namespace Dravencms\Model\Partner\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Dravencms\Model\File\Entities\StructureFile;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,17 +17,17 @@ use Nette;
  * @ORM\Entity(repositoryClass="Gedmo\Sortable\Entity\Repository\SortableRepository")
  * @ORM\Table(name="partnerPartner")
  */
-class Partner extends Nette\Object
+class Partner
 {
+    use Nette\SmartObject;
     use Identifier;
     use TimestampableEntity;
 
     /**
      * @var string
-     * @Gedmo\Translatable
      * @ORM\Column(type="string",length=255,nullable=false,unique=true)
      */
-    private $name;
+    private $identifier;
 
     /**
      * @var string
@@ -34,13 +35,6 @@ class Partner extends Nette\Object
      * @ORM\Column(type="string",length=255)
      */
     private $url;
-
-    /**
-     * @var string
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text")
-     */
-    private $description;
 
     /**
      * @var boolean
@@ -62,12 +56,10 @@ class Partner extends Nette\Object
     private $position;
 
     /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
-     * this is not a mapped field of entity metadata, just a simple property
-     * and it is not necessary because globally locale can be set in listener
+     * @var ArrayCollection|PartnerTranslation[]
+     * @ORM\OneToMany(targetEntity="PartnerTranslation", mappedBy="partner",cascade={"persist", "remove"})
      */
-    private $locale;
+    private $translations;
 
     /**
      * @var StructureFile
@@ -78,51 +70,43 @@ class Partner extends Nette\Object
 
     /**
      * Partner constructor.
-     * @param $name
-     * @param $url
-     * @param $description
-     * @param $isActive
-     * @param $isMain
+     * @param string $identifier
+     * @param string $url
+     * @param bool $isActive
+     * @param bool $isMain
      * @param StructureFile $structureFile
      */
-    public function __construct($name, $url, $description, $isActive, $isMain, StructureFile $structureFile)
+    public function __construct(string $identifier, string $url, bool $isActive, bool $isMain, StructureFile $structureFile)
     {
-        $this->name = $name;
+        $this->identifier = $identifier;
         $this->url = $url;
-        $this->description = $description;
         $this->isActive = $isActive;
         $this->isMain = $isMain;
         $this->structureFile = $structureFile;
+        $this->translations = new ArrayCollection();
     }
 
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setIdentifier(string $identifier)
     {
-        $this->name = $name;
+        $this->identifier = $identifier;
     }
 
     /**
      * @param string $url
      */
-    public function setUrl($url)
+    public function setUrl(string $url)
     {
         $this->url = $url;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
 
     /**
      * @param boolean $isActive
      */
-    public function setIsActive($isActive)
+    public function setIsActive(bool $isActive)
     {
         $this->isActive = $isActive;
     }
@@ -130,7 +114,7 @@ class Partner extends Nette\Object
     /**
      * @param boolean $isMain
      */
-    public function setIsMain($isMain)
+    public function setIsMain(bool $isMain)
     {
         $this->isMain = $isMain;
     }
@@ -138,23 +122,15 @@ class Partner extends Nette\Object
     /**
      * @param int $position
      */
-    public function setPosition($position)
+    public function setPosition(int $position)
     {
         $this->position = $position;
     }
 
     /**
-     * @param mixed $locale
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-    }
-
-    /**
      * @param StructureFile $structureFile
      */
-    public function setStructureFile($structureFile)
+    public function setStructureFile(StructureFile $structureFile)
     {
         $this->structureFile = $structureFile;
     }
@@ -162,31 +138,23 @@ class Partner extends Nette\Object
     /**
      * @return string
      */
-    public function getName()
+    public function getIdentifier(): string
     {
-        return $this->name;
+        return $this->identifier;
     }
 
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
     /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
      * @return boolean
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->isActive;
     }
@@ -194,7 +162,7 @@ class Partner extends Nette\Object
     /**
      * @return boolean
      */
-    public function isMain()
+    public function isMain(): bool
     {
         return $this->isMain;
     }
@@ -202,25 +170,25 @@ class Partner extends Nette\Object
     /**
      * @return int
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
 
     /**
-     * @return mixed
+     * @return StructureFile
      */
-    public function getLocale()
+    public function getStructureFile(): StructureFile
     {
-        return $this->locale;
+        return $this->structureFile;
     }
 
     /**
-     * @return StructureFile
+     * @return ArrayCollection|PartnerTranslation[]
      */
-    public function getStructureFile()
+    public function getTranslations()
     {
-        return $this->structureFile;
+        return $this->translations;
     }
 
 }

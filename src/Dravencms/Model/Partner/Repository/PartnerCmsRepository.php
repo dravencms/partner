@@ -37,7 +37,7 @@ class PartnerCmsRepository implements ICmsComponentRepository
                 $return = [];
                 /** @var Partner $partner */
                 foreach ($this->partnerRepository->getActive() AS $partner) {
-                    $return[] = new CmsActionOption($partner->getName(), ['id' => $partner->getId()]);
+                    $return[] = new CmsActionOption($partner->getIdentifier(), ['id' => $partner->getId()]);
                 }
                 break;
 
@@ -63,11 +63,10 @@ class PartnerCmsRepository implements ICmsComponentRepository
      */
     public function getActionOption($componentAction, array $parameters)
     {
-        //$found = $this->partnerRepository->findTranslatedOneBy($this->partnerRepository, $locale, $parameters + ['isActive' => true]);
-        $found = null; //!FIXME
+        $found = $this->partnerRepository->getOneByParameters($parameters + ['isActive' => true]);
         if ($found)
         {
-            return new CmsActionOption(($found->getLead() ? $found->getLead() . ' ' : '') . $found->getName(), $parameters);
+            return new CmsActionOption($found->getIdentifier(), $parameters);
         }
 
         return null;

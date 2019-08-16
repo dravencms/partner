@@ -32,6 +32,11 @@
       "configuration": {
         "extensions": {
           "partner": "Dravencms\\Partner\\DI\\PartnerExtension"
+        },
+        "doctrine": {
+          "metadata": {
+            "Dravencms\\Model\\Partner": "%appDir%/../vendor/dravencms/partner/src/Dravencms/Model/Partner"
+          }
         }
       },
       "scripts": {
