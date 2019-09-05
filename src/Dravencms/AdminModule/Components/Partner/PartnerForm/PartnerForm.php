@@ -212,6 +212,7 @@ class PartnerForm extends BaseControl
             $partner->setIsActive($values->isActive);
             $partner->setIsMain($values->isMain);
             $partner->setPosition($values->position);
+            $partner->setUrl($values->url);
         } else {
             $partner = new Partner(
                 $values->identifier,
