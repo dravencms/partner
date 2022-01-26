@@ -2,7 +2,7 @@
 
 namespace Dravencms\Partner\DI;
 
-use Dravencms\Model\Partner\Entities\Partner;
+use Dravencms\Partner\Partner;
 use Nette;
 use Salamek\Cms\DI\CmsExtension;
 /**
@@ -18,7 +18,7 @@ class PartnerExtension extends Nette\DI\CompilerExtension
 
 
         $builder->addDefinition($this->prefix('partner'))
-            ->setClass(Partner::class, []);
+            ->setClass(Partner::class);
 
         if (class_exists(CmsExtension::class)) {
             $this->loadCmsComponents();
