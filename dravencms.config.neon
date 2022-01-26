@@ -1,0 +1,7 @@
+extensions:
+    dravencms.partner: Dravencms\Partner\DI\PartnerExtension
+
+
+nettrine.orm.annotations:
+    mapping:
+        Dravencms\Model\Partner: %appDir%/../vendor/dravencms/partner/src/Dravencms/Model/Partner/Entities

@@ -1,23 +1,18 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
 
 namespace Dravencms\Model\Partner\Repository;
 
-use Dravencms\Locale\TLocalizedRepository;
+
 use Dravencms\Model\Partner\Entities\Partner;
-use Gedmo\Translatable\TranslatableListener;
-use Kdyby\Doctrine\EntityManager;
-use Nette;
-use Salamek\Cms\CmsActionOption;
-use Salamek\Cms\ICmsActionOption;
-use Salamek\Cms\ICmsComponentRepository;
-use Salamek\Cms\Models\ILocale;
+use Dravencms\Database\EntityManager;
+
 
 class PartnerRepository
 {
-    /** @var \Kdyby\Doctrine\EntityRepository */
+    /** @var \Doctrine\Persistence\ObjectRepository|Partner */
     private $partnerRepository;
 
     /** @var EntityManager */
@@ -37,7 +32,7 @@ class PartnerRepository
      * @param $id
      * @return mixed|null|Partner
      */
-    public function getOneById($id)
+    public function getOneById($id): ?Partner
     {
         return $this->partnerRepository->find($id);
     }
@@ -62,10 +57,9 @@ class PartnerRepository
     /**
      * @param $identifier
      * @param Partner|null $partnerIgnore
-     * @return Partner|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return bool
      */
-    public function isIdentifierFree($identifier, Partner $partnerIgnore = null)
+    public function isIdentifierFree($identifier, Partner $partnerIgnore = null): bool
     {
         $qb = $this->partnerRepository->createQueryBuilder('p')
             ->select('p')
@@ -97,7 +91,7 @@ class PartnerRepository
      * @param bool $isActive
      * @return mixed|null|Partner
      */
-    public function getOneByIdAndActive($id, $isActive = true)
+    public function getOneByIdAndActive($id, $isActive = true): ?Partner
     {
         return $this->partnerRepository->findOneBy(['id' => $id, 'isActive' => $isActive]);
     }
@@ -114,7 +108,7 @@ class PartnerRepository
     /**
      * @return Partner[]
      */
-    public function getMain()
+    public function getMain(): ?Partner
     {
         return $this->partnerRepository->findOneBy(['isMain' => true]);
     }
@@ -131,7 +125,7 @@ class PartnerRepository
      * @param array $parameters
      * @return Partner|null
      */
-    public function getOneByParameters(array $parameters = [])
+    public function getOneByParameters(array $parameters = []): ?Partner
     {
         return $this->partnerRepository->findOneBy($parameters);
     }

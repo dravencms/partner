@@ -1,14 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
 namespace Dravencms\Model\Partner\Entities;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Dravencms\Database\Attributes\Identifier;
 use Dravencms\Model\Locale\Entities\Locale;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Sortable\Sortable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Kdyby\Doctrine\Entities\Attributes\Identifier;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Nette;
 
@@ -57,8 +54,8 @@ class PartnerTranslation
     private $locale;
 
     /**
-     * GalleryTranslation constructor.
-     * @param Gallery $gallery
+     * PartnerTranslation constructor.
+     * @param Partner $partner
      * @param Locale $locale
      * @param $name
      * @param $description
@@ -74,7 +71,7 @@ class PartnerTranslation
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -82,7 +79,7 @@ class PartnerTranslation
     /**
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
@@ -90,7 +87,7 @@ class PartnerTranslation
     /**
      * @param Partner $partner
      */
-    public function setGallery(Partner $partner)
+    public function setGallery(Partner $partner): void
     {
         $this->partner = $partner;
     }
@@ -98,7 +95,7 @@ class PartnerTranslation
     /**
      * @param Locale $locale
      */
-    public function setLocale(Locale $locale)
+    public function setLocale(Locale $locale): void
     {
         $this->locale = $locale;
     }
@@ -106,7 +103,7 @@ class PartnerTranslation
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -114,7 +111,7 @@ class PartnerTranslation
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -122,7 +119,7 @@ class PartnerTranslation
     /**
      * @return Partner
      */
-    public function getPartner()
+    public function getPartner(): Partner
     {
         return $this->partner;
     }
@@ -130,15 +127,15 @@ class PartnerTranslation
     /**
      * @return Locale
      */
-    public function getLocale()
+    public function getLocale(): Locale
     {
         return $this->locale;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }

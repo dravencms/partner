@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /*
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  *
@@ -27,5 +27,5 @@ interface MainFactory
      * @param ICmsActionOption $cmsActionOption
      * @return Main
      */
-    public function create(ICmsActionOption $cmsActionOption = null);
+    public function create(ICmsActionOption $cmsActionOption = null): Main;
 }

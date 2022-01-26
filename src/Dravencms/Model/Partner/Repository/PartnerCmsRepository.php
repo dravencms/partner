@@ -1,15 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
 
 namespace Dravencms\Model\Partner\Repository;
 
-use Dravencms\Locale\TLocalizedRepository;
 use Dravencms\Model\Partner\Entities\Partner;
-use Gedmo\Translatable\TranslatableListener;
-use Kdyby\Doctrine\EntityManager;
-use Nette;
 use Salamek\Cms\CmsActionOption;
 use Salamek\Cms\ICmsActionOption;
 use Salamek\Cms\ICmsComponentRepository;

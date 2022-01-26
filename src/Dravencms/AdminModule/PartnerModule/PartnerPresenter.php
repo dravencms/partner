@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /*
  * To change this template, choose Tools | Templates
@@ -7,9 +7,12 @@
 
 namespace Dravencms\AdminModule\PartnerModule;
 
+use Dravencms\AdminModule\Components\Partner\PartnerForm\PartnerForm;
 use Dravencms\AdminModule\Components\Partner\PartnerForm\PartnerFormFactory;
+use Dravencms\AdminModule\Components\Partner\PartnerGrid\PartnerGrid;
 use Dravencms\AdminModule\Components\Partner\PartnerGrid\PartnerGridFactory;
 use Dravencms\AdminModule\SecuredPresenter;
+use Dravencms\Flash;
 use Dravencms\Model\Partner\Entities\Partner;
 use Dravencms\Model\Partner\Repository\PartnerRepository;
 
@@ -36,7 +39,7 @@ class PartnerPresenter extends SecuredPresenter
     /**
      * @isAllowed(partner,edit)
      */
-    public function renderDefault()
+    public function renderDefault(): void
     {
         $this->template->h1 = 'Partners';
     }
@@ -46,7 +49,7 @@ class PartnerPresenter extends SecuredPresenter
      * @param $id
      * @throws \Nette\Application\BadRequestException
      */
-    public function actionEdit($id)
+    public function actionEdit(int $id = null): void
     {
         if ($id) {
             $partner = $this->partnerRepository->getOneById($id);
@@ -64,27 +67,27 @@ class PartnerPresenter extends SecuredPresenter
     }
 
     /**
-     * @return \AdminModule\Components\Partner\PartnerForm
+     * @return PartnerForm
      */
-    protected function createComponentFormPartner()
+    protected function createComponentFormPartner(): PartnerForm
     {
         $control = $this->partnerFormFactory->create($this->partner);
         $control->onSuccess[] = function(){
-            $this->flashMessage('Partner has been successfully saved', 'alert-success');
+            $this->flashMessage('Partner has been successfully saved', Flash::SUCCESS);
             $this->redirect('Partner:');
         };
         return $control;
     }
 
     /**
-     * @return \AdminModule\Components\Partner\PartnerGrid
+     * @return PartnerGrid
      */
-    public function createComponentGridPartner()
+    public function createComponentGridPartner(): PartnerGrid
     {
         $control = $this->partnerGridFactory->create();
         $control->onDelete[] = function()
         {
-            $this->flashMessage('Partner has been successfully deleted', 'alert-success');
+            $this->flashMessage('Partner has been successfully deleted', Flash::SUCCESS);
             $this->redirect('Partner:');
         };
         return $control;

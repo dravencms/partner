@@ -1,6 +1,5 @@
 - Dravencms\Model\Partner\Repository\PartnerRepository
 - Dravencms\Model\Partner\Repository\PartnerTranslationRepository
-- Dravencms\Model\Partner\Repository\PartnerCmsRepository
 
 - Dravencms\Model\Partner\Fixtures\AclOperationFixtures
 - Dravencms\Model\Partner\Fixtures\AclResourceFixtures

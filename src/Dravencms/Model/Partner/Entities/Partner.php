@@ -1,14 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 namespace Dravencms\Model\Partner\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Dravencms\Database\Attributes\Identifier;
 use Dravencms\Model\File\Entities\StructureFile;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
-use Gedmo\Sortable\Sortable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Kdyby\Doctrine\Entities\Attributes\Identifier;
 use Nette;
 
 /**
@@ -87,9 +85,9 @@ class Partner
     }
 
     /**
-     * @param string $name
+     * @param string $identifier
      */
-    public function setIdentifier(string $identifier)
+    public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }
@@ -97,7 +95,7 @@ class Partner
     /**
      * @param string $url
      */
-    public function setUrl(string $url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
@@ -106,7 +104,7 @@ class Partner
     /**
      * @param boolean $isActive
      */
-    public function setIsActive(bool $isActive)
+    public function setIsActive(bool $isActive): void
     {
         $this->isActive = $isActive;
     }
@@ -114,7 +112,7 @@ class Partner
     /**
      * @param boolean $isMain
      */
-    public function setIsMain(bool $isMain)
+    public function setIsMain(bool $isMain): void
     {
         $this->isMain = $isMain;
     }
@@ -122,7 +120,7 @@ class Partner
     /**
      * @param int $position
      */
-    public function setPosition(int $position)
+    public function setPosition(int $position): void
     {
         $this->position = $position;
     }
@@ -130,7 +128,7 @@ class Partner
     /**
      * @param StructureFile $structureFile
      */
-    public function setStructureFile(StructureFile $structureFile)
+    public function setStructureFile(StructureFile $structureFile): void
     {
         $this->structureFile = $structureFile;
     }

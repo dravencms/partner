@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /*
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
@@ -23,11 +23,14 @@ namespace Dravencms\AdminModule\Components\Partner\PartnerGrid;
 
 use Dravencms\Components\BaseControl\BaseControl;
 use Dravencms\Components\BaseGrid\BaseGridFactory;
+use Dravencms\Components\BaseGrid\Grid;
 use Dravencms\Model\Partner\Entities\Partner;
 use Dravencms\Model\Partner\Repository\PartnerRepository;
-use Kdyby\Doctrine\EntityManager;
+use Dravencms\Database\EntityManager;
 use Nette\Utils\Html;
+use Nette\Security\User;
 use Salamek\Files\ImagePipe;
+use Ublaboo\DataGrid\Column\Action\Confirmation\StringConfirmation;
 
 /**
  * Description of PartnerGrid
@@ -49,33 +52,44 @@ class PartnerGrid extends BaseControl
     /** @var ImagePipe */
     private $imagePipe;
 
+    /** @var User */
+    private $user;
+
     /**
      * @var array
      */
     public $onDelete = [];
 
     /**
-     * ArticleGrid constructor.
+     * PartnerGrid constructor.
      * @param PartnerRepository $partnerRepository
      * @param BaseGridFactory $baseGridFactory
      * @param EntityManager $entityManager
+     * @param ImagePipe $imagePipe
+     * @param User $user
      */
-    public function __construct(PartnerRepository $partnerRepository, BaseGridFactory $baseGridFactory, EntityManager $entityManager, ImagePipe $imagePipe)
+    public function __construct(
+        PartnerRepository $partnerRepository,
+        BaseGridFactory $baseGridFactory,
+        EntityManager $entityManager,
+        ImagePipe $imagePipe,
+        User $user
+    )
     {
-        parent::__construct();
-
         $this->baseGridFactory = $baseGridFactory;
         $this->partnerRepository = $partnerRepository;
         $this->entityManager = $entityManager;
         $this->imagePipe = $imagePipe;
+        $this->user = $user;
     }
 
 
     /**
-     * @param $name
-     * @return \Dravencms\Components\BaseGrid\BaseGrid
+     * @param string $name
+     * @return Grid
+     * @throws \Ublaboo\DataGrid\Exception\DataGridException
      */
-    public function createComponentGrid($name)
+    public function createComponentGrid(string $name): Grid
     {
         $grid = $this->baseGridFactory->create($this, $name);
 
@@ -107,19 +121,19 @@ class PartnerGrid extends BaseControl
 
         $grid->addColumnPosition('position', 'Position', 'up!', 'down!');
 
-        if ($this->presenter->isAllowed('partner', 'edit')) {
+        if ($this->user->isAllowed('partner', 'edit')) {
             $grid->addAction('edit', '')
                 ->setIcon('pencil')
                 ->setTitle('Upravit')
                 ->setClass('btn btn-xs btn-primary');
         }
 
-        if ($this->presenter->isAllowed('partner', 'delete')) {
+        if ($this->user->isAllowed('partner', 'delete')) {
             $grid->addAction('delete', '', 'delete!')
                 ->setIcon('trash')
                 ->setTitle('Smazat')
                 ->setClass('btn btn-xs btn-danger ajax')
-                ->setConfirm('Do you really want to delete row %s?', 'identifier');
+                ->setConfirmation(new StringConfirmation('Do you really want to delete row %s?', 'identifier'));
             $grid->addGroupAction('Smazat')->onSelect[] = [$this, 'handleDelete'];
         }
 
@@ -135,7 +149,7 @@ class PartnerGrid extends BaseControl
      * @param $id
      * @throws \Exception
      */
-    public function handleDelete($id)
+    public function handleDelete($id): void
     {
         $partners = $this->partnerRepository->getById($id);
         foreach ($partners AS $partner)
@@ -148,19 +162,19 @@ class PartnerGrid extends BaseControl
         $this->onDelete();
     }
 
-    public function handleUp($id)
+    public function handleUp($id): void
     {
         $menuItem = $this->partnerRepository->getOneById($id);
         $this->partnerRepository->moveUp($menuItem, 1);
     }
 
-    public function handleDown($id)
+    public function handleDown($id): void
     {
         $menuItem = $this->partnerRepository->getOneById($id);
         $this->partnerRepository->moveDown($menuItem, 1);
     }
 
-    public function render()
+    public function render(): void
     {
         $template = $this->template;
         $template->setFile(__DIR__ . '/PartnerGrid.latte');

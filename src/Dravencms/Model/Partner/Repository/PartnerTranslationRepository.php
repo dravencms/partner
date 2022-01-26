@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2019 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -7,13 +7,13 @@ namespace Dravencms\Model\Partner\Repository;
 
 use Dravencms\Model\Partner\Entities\Partner;
 use Dravencms\Model\Partner\Entities\PartnerTranslation;
-use Kdyby\Doctrine\EntityManager;
-use Nette;
+use Dravencms\Database\EntityManager;
+
 use Dravencms\Model\Locale\Entities\ILocale;
 
 class PartnerTranslationRepository
 {
-    /** @var \Kdyby\Doctrine\EntityRepository */
+    /** @var \Doctrine\Persistence\ObjectRepository|PartnerTranslation */
     private $partnerTranslationRepository;
 
     /** @var EntityManager */
@@ -33,10 +33,9 @@ class PartnerTranslationRepository
      * @param $name
      * @param ILocale $locale
      * @param Partner|null $partnerIgnore
-     * @return boolean
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return bool
      */
-    public function isNameFree($name, ILocale $locale, Partner $partnerIgnore = null)
+    public function isNameFree($name, ILocale $locale, Partner $partnerIgnore = null): bool
     {
         $qb = $this->partnerTranslationRepository->createQueryBuilder('pt')
             ->select('pt')
@@ -61,10 +60,9 @@ class PartnerTranslationRepository
     /**
      * @param Partner $partner
      * @param ILocale $locale
-     * @return PartnerTranslation
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return PartnerTranslation|null
      */
-    public function getTranslation(Partner $partner, ILocale $locale)
+    public function getTranslation(Partner $partner, ILocale $locale): ?PartnerTranslation
     {
         $qb = $this->partnerTranslationRepository->createQueryBuilder('pt')
             ->select('pt')

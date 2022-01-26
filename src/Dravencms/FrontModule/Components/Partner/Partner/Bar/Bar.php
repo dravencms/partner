@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Dravencms\FrontModule\Components\Partner\Partner\Bar;
 
@@ -26,13 +26,12 @@ class Bar extends BaseControl
      */
     public function __construct(ICmsActionOption $cmsActionOption, PartnerRepository $partnerRepository, BaseFormFactory $baseFormFactory)
     {
-        parent::__construct();
         $this->cmsActionOption = $cmsActionOption;
         $this->partnerRepository = $partnerRepository;
         $this->baseFormFactory = $baseFormFactory;
     }
 
-    public function render()
+    public function render(): void
     {
         $template = $this->template;
         

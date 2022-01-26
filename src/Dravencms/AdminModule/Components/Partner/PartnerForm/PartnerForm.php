@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /*
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  *
@@ -30,9 +30,8 @@ use Dravencms\Model\Partner\Entities\PartnerTranslation;
 use Dravencms\Model\Partner\Repository\PartnerRepository;
 use Dravencms\Model\File\Repository\StructureFileRepository;
 use Dravencms\Model\Partner\Repository\PartnerTranslationRepository;
-use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Control;
-use Nette\Application\UI\Form;
+use Dravencms\Database\EntityManager;
+use Dravencms\Components\BaseForm\Form;
 
 /**
  * Description of PartnerForm
@@ -72,14 +71,17 @@ class PartnerForm extends BaseControl
     public $onSuccess = [];
 
     /**
-     * ArticleForm constructor.
+     * PartnerForm constructor.
      * @param BaseFormFactory $baseFormFactory
      * @param EntityManager $entityManager
      * @param PartnerRepository $partnerRepository
+     * @param PartnerTranslationRepository $partnerTranslationRepository
      * @param StructureFileRepository $structureFileRepository
      * @param LocaleRepository $localeRepository
+     * @param CurrentLocaleResolver $currentLocaleResolver
      * @param File $file
      * @param Partner|null $partner
+     * @throws \Exception
      */
     public function __construct(
         BaseFormFactory $baseFormFactory,
@@ -92,8 +94,6 @@ class PartnerForm extends BaseControl
         File $file,
         Partner $partner = null
     ) {
-        parent::__construct();
-
         $this->partner = $partner;
 
         $this->baseFormFactory = $baseFormFactory;
@@ -132,7 +132,10 @@ class PartnerForm extends BaseControl
         $this['form']->setDefaults($defaults);
     }
 
-    protected function createComponentForm()
+    /**
+     * @return Form
+     */
+    protected function createComponentForm(): Form
     {
         $form = $this->baseFormFactory->create();
 
@@ -167,8 +170,9 @@ class PartnerForm extends BaseControl
 
     /**
      * @param Form $form
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function editFormValidate(Form $form)
+    public function editFormValidate(Form $form): void
     {
         $values = $form->getValues();
 
@@ -192,7 +196,7 @@ class PartnerForm extends BaseControl
      * @param Form $form
      * @throws \Exception
      */
-    public function editFormSucceeded(Form $form)
+    public function editFormSucceeded(Form $form): void
     {
         $values = $form->getValues();
 
