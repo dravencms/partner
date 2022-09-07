@@ -32,6 +32,7 @@ use Dravencms\Model\File\Repository\StructureFileRepository;
 use Dravencms\Model\Partner\Repository\PartnerTranslationRepository;
 use Dravencms\Database\EntityManager;
 use Dravencms\Components\BaseForm\Form;
+use Security\User;
 
 /**
  * Description of PartnerForm
@@ -60,6 +61,9 @@ class PartnerForm extends BaseControl
 
     /** @var File */
     private $file;
+    
+    /** @var User */
+    private $user;
 
     /** @var \Dravencms\Model\Locale\Entities\Locale|null */
     private $currentLocale;
@@ -92,6 +96,7 @@ class PartnerForm extends BaseControl
         LocaleRepository $localeRepository,
         CurrentLocaleResolver $currentLocaleResolver,
         File $file,
+        User $user,
         Partner $partner = null
     ) {
         $this->partner = $partner;
@@ -104,6 +109,7 @@ class PartnerForm extends BaseControl
         $this->currentLocale = $currentLocaleResolver->getCurrentLocale();
         $this->localeRepository = $localeRepository;
         $this->file = $file;
+        $this->user = $user;
 
 
         if ($this->partner) {
@@ -187,7 +193,7 @@ class PartnerForm extends BaseControl
             }
         }
 
-        if (!$this->presenter->isAllowed('partner', 'edit')) {
+        if (!$this->user->isAllowed('partner', 'edit')) {
             $form->addError('Nemáte oprávění editovat article.');
         }
     }
