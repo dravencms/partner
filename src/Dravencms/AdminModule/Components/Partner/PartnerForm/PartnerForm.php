@@ -32,7 +32,7 @@ use Dravencms\Model\File\Repository\StructureFileRepository;
 use Dravencms\Model\Partner\Repository\PartnerTranslationRepository;
 use Dravencms\Database\EntityManager;
 use Dravencms\Components\BaseForm\Form;
-use Security\User;
+use Nette\Security\User;
 
 /**
  * Description of PartnerForm
