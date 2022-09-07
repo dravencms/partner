@@ -158,9 +158,9 @@ class PartnerForm extends BaseControl
 
         $form->addText('url');
 
-        $form->addText('structureFile');
+        $form->addInteger('structureFile');
 
-        $form->addText('position')
+        $form->addInteger('position')
             ->setDisabled((is_null($this->partner)));
 
         $form->addCheckbox('isActive');
