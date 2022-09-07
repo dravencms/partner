@@ -94,7 +94,7 @@ class PartnerGrid extends BaseControl
         $grid = $this->baseGridFactory->create($this, $name);
 
         $grid->setDataSource($this->partnerRepository->getPartnerQueryBuilder());
-
+        $grid->setDefaultSort(['position' => 'ASC']);
         $grid->addColumnText('name', 'Name')
             ->setAlign('center')
             ->setRenderer(function ($row) use($grid){
@@ -119,7 +119,9 @@ class PartnerGrid extends BaseControl
         $grid->addColumnBoolean('isActive', 'Active');
         $grid->addColumnBoolean('isMain', 'Is main');
 
-        $grid->addColumnPosition('position', 'Position', 'up!', 'down!');
+        $grid->addColumnNumber('position', 'Position')
+            ->setAlign('center')
+            ->setFilterRange();
 
         if ($this->user->isAllowed('partner', 'edit')) {
             $grid->addAction('edit', '')
@@ -160,18 +162,6 @@ class PartnerGrid extends BaseControl
         $this->entityManager->flush();
 
         $this->onDelete();
-    }
-
-    public function handleUp($id): void
-    {
-        $menuItem = $this->partnerRepository->getOneById($id);
-        $this->partnerRepository->moveUp($menuItem, 1);
-    }
-
-    public function handleDown($id): void
-    {
-        $menuItem = $this->partnerRepository->getOneById($id);
-        $this->partnerRepository->moveDown($menuItem, 1);
     }
 
     public function render(): void

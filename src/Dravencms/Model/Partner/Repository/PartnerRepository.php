@@ -102,7 +102,7 @@ class PartnerRepository
      */
     public function getAllByActive($isActive = true)
     {
-        return $this->partnerRepository->findBy(['isActive' => $isActive], ['isMain' => 'DESC']);
+        return $this->partnerRepository->findBy(['isActive' => $isActive], ['isMain' => 'DESC', 'position' => 'ASC']);
     }
 
     /**
