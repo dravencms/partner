@@ -5,16 +5,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Dravencms\Database\Attributes\Identifier;
 use Dravencms\Model\Locale\Entities\Locale;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Doctrine\ORM\Mapping\UniqueConstraint;
+use Dravencms\Database\Attributes\TimestampableEntity;
 use Nette;
 
 /**
  * Class PartnerTranslation
  * @package App\Model\Partner\Entities
- * @ORM\Entity
- * @ORM\Table(name="partnerPartnerTranslation", uniqueConstraints={@UniqueConstraint(name="partner_translation_name_unique", columns={"partner_id", "locale_id", "name"})})
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'partnerPartnerTranslation', uniqueConstraints: [new ORM\UniqueConstraint(name: 'partner_translation_name_unique', columns: ['partner_id', 'locale_id', 'name'])])]
 class PartnerTranslation
 {
     use Nette\SmartObject;
@@ -23,34 +22,32 @@ class PartnerTranslation
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255,nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private $name;
 
-    /**
-     * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(length=255, unique=true,nullable=false)
-     */
+    #[Gedmo\Slug(fields: ['name'])]
+    #[ORM\Column(length: 255, unique: true, nullable: false)]
     private $slug;
 
     /**
      * @var string
-     * @ORM\Column(type="text",nullable=false)
      */
+    #[ORM\Column(type: 'text', nullable: false)]
     private $description;
 
     /**
      * @var Partner
-     * @ORM\ManyToOne(targetEntity="Partner", inversedBy="translations")
-     * @ORM\JoinColumn(name="partner_id", referencedColumnName="id")
      */
+    #[ORM\ManyToOne(targetEntity: Partner::class, inversedBy: 'translations')]
+    #[ORM\JoinColumn(name: 'partner_id', referencedColumnName: 'id')]
     private $partner;
 
     /**
      * @var Locale
-     * @ORM\ManyToOne(targetEntity="Dravencms\Model\Locale\Entities\Locale")
-     * @ORM\JoinColumn(name="locale_id", referencedColumnName="id")
      */
+    #[ORM\ManyToOne(targetEntity: \Dravencms\Model\Locale\Entities\Locale::class)]
+    #[ORM\JoinColumn(name: 'locale_id', referencedColumnName: 'id')]
     private $locale;
 
     /**
@@ -140,4 +137,3 @@ class PartnerTranslation
         return $this->slug;
     }
 }
-

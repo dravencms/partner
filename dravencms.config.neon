@@ -2,6 +2,12 @@ extensions:
     dravencms.partner: Dravencms\Partner\DI\PartnerExtension
 
 
-nettrine.orm.annotations:
-    mapping:
-        Dravencms\Model\Partner: %appDir%/../vendor/dravencms/partner/src/Dravencms/Model/Partner/Entities
+nettrine.orm:
+    managers:
+        default:
+            mapping:
+                DravencmsPartner:
+                    type: attributes
+                    directories:
+                        - %appDir%/../vendor/dravencms/partner/src/Dravencms/Model/Partner/Entities
+                    namespace: Dravencms\Model\Partner

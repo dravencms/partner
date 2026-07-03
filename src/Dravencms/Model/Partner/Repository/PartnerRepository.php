@@ -64,9 +64,7 @@ class PartnerRepository
         $qb = $this->partnerRepository->createQueryBuilder('p')
             ->select('p')
             ->where('p.identifier = :identifier')
-            ->setParameters([
-                'identifier' => $identifier
-            ]);
+            ->setParameter('identifier', $identifier);
         if ($partnerIgnore)
         {
             $qb->andWhere('p != :partnerIgnore')

@@ -42,10 +42,8 @@ class PartnerTranslationRepository
             ->join('pt.partner', 'p')
             ->where('pt.name = :name')
             ->andWhere('pt.locale = :locale')
-            ->setParameters([
-                'name' => $name,
-                'locale' => $locale
-            ]);
+            ->setParameter('name', $name)
+            ->setParameter('locale', $locale);
 
         if ($partnerIgnore)
         {
@@ -68,10 +66,8 @@ class PartnerTranslationRepository
             ->select('pt')
             ->where('pt.locale = :locale')
             ->andWhere('pt.partner = :partner')
-            ->setParameters([
-                'partner' => $partner,
-                'locale' => $locale
-            ]);
+            ->setParameter('partner', $partner)
+            ->setParameter('locale', $locale);
         return $qb->getQuery()->getOneOrNullResult();
     }
 }

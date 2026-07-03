@@ -6,15 +6,15 @@ use Dravencms\Database\Attributes\Identifier;
 use Dravencms\Model\File\Entities\StructureFile;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Dravencms\Database\Attributes\TimestampableEntity;
 use Nette;
 
 /**
  * Class Partner
  * @package App\Model\Partner\Entities
- * @ORM\Entity(repositoryClass="Gedmo\Sortable\Entity\Repository\SortableRepository")
- * @ORM\Table(name="partnerPartner")
  */
+#[ORM\Entity(repositoryClass: \Gedmo\Sortable\Entity\Repository\SortableRepository::class)]
+#[ORM\Table(name: 'partnerPartner')]
 class Partner
 {
     use Nette\SmartObject;
@@ -23,47 +23,47 @@ class Partner
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255,nullable=false,unique=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: true)]
     private $identifier;
 
     /**
      * @var string
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255)
      */
+    #[Gedmo\Translatable]
+    #[ORM\Column(type: 'string', length: 255)]
     private $url;
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     private $isActive;
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     private $isMain;
 
     /**
      * @var integer
-     * @Gedmo\SortablePosition
-     * @ORM\Column(type="integer")
      */
+    #[Gedmo\SortablePosition]
+    #[ORM\Column(type: 'integer')]
     private $position;
 
     /**
      * @var ArrayCollection|PartnerTranslation[]
-     * @ORM\OneToMany(targetEntity="PartnerTranslation", mappedBy="partner",cascade={"persist", "remove"})
      */
+    #[ORM\OneToMany(targetEntity: PartnerTranslation::class, mappedBy: 'partner', cascade: ['persist', 'remove'])]
     private $translations;
 
     /**
      * @var StructureFile
-     * @ORM\ManyToOne(targetEntity="\Dravencms\Model\File\Entities\StructureFile", inversedBy="articles")
-     * @ORM\JoinColumn(name="structure_file_id", referencedColumnName="id", onDelete="SET NULL")
      */
+    #[ORM\ManyToOne(targetEntity: \Dravencms\Model\File\Entities\StructureFile::class, inversedBy: 'articles')]
+    #[ORM\JoinColumn(name: 'structure_file_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $structureFile;
 
     /**
@@ -190,4 +190,3 @@ class Partner
     }
 
 }
-
