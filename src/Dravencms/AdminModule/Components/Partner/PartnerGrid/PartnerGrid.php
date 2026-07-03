@@ -30,7 +30,7 @@ use Dravencms\Database\EntityManager;
 use Nette\Utils\Html;
 use Nette\Security\User;
 use Salamek\Files\ImagePipe;
-use Ublaboo\DataGrid\Column\Action\Confirmation\StringConfirmation;
+use Contributte\Datagrid\Column\Action\Confirmation\StringConfirmation;
 
 /**
  * Description of PartnerGrid
@@ -87,7 +87,7 @@ class PartnerGrid extends BaseControl
     /**
      * @param string $name
      * @return Grid
-     * @throws \Ublaboo\DataGrid\Exception\DataGridException
+     * @throws \Contributte\Datagrid\Exception\DataGridException
      */
     public function createComponentGrid(string $name): Grid
     {
