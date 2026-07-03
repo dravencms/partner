@@ -1,6 +1,10 @@
 extensions:
     dravencms.partner: Dravencms\Partner\DI\PartnerExtension
 
+services:
+    partner.partnerPresenter:
+        class: Dravencms\AdminModule\PartnerModule\PartnerPresenter
+
 
 nettrine.orm:
     managers:
