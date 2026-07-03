@@ -27,5 +27,5 @@ interface MainFactory
      * @param ICmsActionOption $cmsActionOption
      * @return Main
      */
-    public function create(ICmsActionOption $cmsActionOption = null): Main;
+    public function create(?ICmsActionOption $cmsActionOption = null): Main;
 }

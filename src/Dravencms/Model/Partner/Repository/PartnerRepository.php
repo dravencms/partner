@@ -59,7 +59,7 @@ class PartnerRepository
      * @param Partner|null $partnerIgnore
      * @return bool
      */
-    public function isIdentifierFree($identifier, Partner $partnerIgnore = null): bool
+    public function isIdentifierFree($identifier, ?Partner $partnerIgnore = null): bool
     {
         $qb = $this->partnerRepository->createQueryBuilder('p')
             ->select('p')

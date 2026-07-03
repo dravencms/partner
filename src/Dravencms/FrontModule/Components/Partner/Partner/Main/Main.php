@@ -24,7 +24,7 @@ class Main extends BaseControl
      * @param PartnerRepository $partnerRepository
      * @param BaseFormFactory $baseFormFactory
      */
-    public function __construct(ICmsActionOption $cmsActionOption = null, PartnerRepository $partnerRepository, BaseFormFactory $baseFormFactory)
+    public function __construct(?ICmsActionOption $cmsActionOption, PartnerRepository $partnerRepository, BaseFormFactory $baseFormFactory)
     {
         $this->cmsActionOption = $cmsActionOption;
         $this->partnerRepository = $partnerRepository;

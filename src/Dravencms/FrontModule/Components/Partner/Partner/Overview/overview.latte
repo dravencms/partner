@@ -13,7 +13,7 @@
 </div>
 
 <div class="row page-row">
-    <div class="col-md-3 col-sm-3 col-xs-12 text-center" n:foreach="$overview AS $partner">
+    <div class="col-md-3 col-sm-3 col-xs-12 text-center" n:foreach="$overview as $partner">
         <div class="partner-cover">
             {if $partner->getUrl()}<a href="{$partner->getUrl()}" target="_blank">{/if}
                 <img class="img-responsive" n:img="$partner->getStructureFile(), '261x144', 'fit_exact'" alt="{$partner->getName()}" title="{$partner->getName()}">

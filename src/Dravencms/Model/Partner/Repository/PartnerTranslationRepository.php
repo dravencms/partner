@@ -35,7 +35,7 @@ class PartnerTranslationRepository
      * @param Partner|null $partnerIgnore
      * @return bool
      */
-    public function isNameFree($name, ILocale $locale, Partner $partnerIgnore = null): bool
+    public function isNameFree($name, ILocale $locale, ?Partner $partnerIgnore = null): bool
     {
         $qb = $this->partnerTranslationRepository->createQueryBuilder('pt')
             ->select('pt')

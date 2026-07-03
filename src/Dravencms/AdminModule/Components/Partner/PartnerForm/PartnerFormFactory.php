@@ -28,5 +28,5 @@ interface PartnerFormFactory
      * @param Partner|null $partner
      * @return PartnerForm
      */
-    public function create(Partner $partner = null): PartnerForm;
+    public function create(?Partner $partner = null): PartnerForm;
 }

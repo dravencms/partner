@@ -97,7 +97,7 @@ class PartnerForm extends BaseControl
         CurrentLocaleResolver $currentLocaleResolver,
         File $file,
         User $user,
-        Partner $partner = null
+        ?Partner $partner = null
     ) {
         $this->partner = $partner;
 
@@ -111,31 +111,6 @@ class PartnerForm extends BaseControl
         $this->file = $file;
         $this->user = $user;
 
-
-        if ($this->partner) {
-
-            $defaults = [
-                'identifier' => $this->partner->getIdentifier(),
-                'url' => $this->partner->getUrl(),
-                'structureFile' => ($this->partner->getStructureFile() ? $this->partner->getStructureFile()->getId() : null),
-                'position' => $this->partner->getPosition(),
-                'isActive' => $this->partner->isActive(),
-                'isMain' => $this->partner->isMain()
-            ];
-
-            foreach ($this->partner->getTranslations() AS $translation)
-            {
-                $defaults[$translation->getLocale()->getLanguageCode()]['name'] = $translation->getName();
-                $defaults[$translation->getLocale()->getLanguageCode()]['description'] = $translation->getDescription();
-            }
-        }
-        else{
-            $defaults = [
-                'isActive' => true
-            ];
-        }
-
-        $this['form']->setDefaults($defaults);
     }
 
     /**
@@ -145,7 +120,7 @@ class PartnerForm extends BaseControl
     {
         $form = $this->baseFormFactory->create();
 
-        foreach ($this->localeRepository->getActive() AS $activeLocale) {
+        foreach ($this->localeRepository->getActive() as $activeLocale) {
             $container = $form->addContainer($activeLocale->getLanguageCode());
             $container->addText('name')
                 ->setRequired('Please enter partner name.')
@@ -171,6 +146,30 @@ class PartnerForm extends BaseControl
         $form->onValidate[] = [$this, 'editFormValidate'];
         $form->onSuccess[] = [$this, 'editFormSucceeded'];
 
+        if ($this->partner) {
+            $defaults = [
+                'identifier' => $this->partner->getIdentifier(),
+                'url' => $this->partner->getUrl(),
+                'structureFile' => ($this->partner->getStructureFile() ? $this->partner->getStructureFile()->getId() : null),
+                'position' => $this->partner->getPosition(),
+                'isActive' => $this->partner->isActive(),
+                'isMain' => $this->partner->isMain()
+            ];
+
+            foreach ($this->partner->getTranslations() as $translation)
+            {
+                $defaults[$translation->getLocale()->getLanguageCode()]['name'] = $translation->getName();
+                $defaults[$translation->getLocale()->getLanguageCode()]['description'] = $translation->getDescription();
+            }
+        }
+        else{
+            $defaults = [
+                'isActive' => true
+            ];
+        }
+
+        $form->setDefaults($defaults);
+
         return $form;
     }
 
@@ -187,7 +186,7 @@ class PartnerForm extends BaseControl
         }
 
 
-        foreach ($this->localeRepository->getActive() AS $activeLocale) {
+        foreach ($this->localeRepository->getActive() as $activeLocale) {
             if (!$this->partnerTranslationRepository->isNameFree($values->{$activeLocale->getLanguageCode()}->name, $activeLocale, $this->partner)) {
                 $form->addError('Tento název je již zabrán.');
             }
@@ -237,7 +236,7 @@ class PartnerForm extends BaseControl
 
         $this->entityManager->flush();
 
-        foreach ($this->localeRepository->getActive() AS $activeLocale) {
+        foreach ($this->localeRepository->getActive() as $activeLocale) {
             if ($partnerTranslation = $this->partnerTranslationRepository->getTranslation($partner, $activeLocale))
             {
                 $partnerTranslation->setName($values->{$activeLocale->getLanguageCode()}->name);
