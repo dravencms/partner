@@ -21,7 +21,7 @@ class AdminMenuFixtures extends AbstractFixture implements DependentFixtureInter
     {
         $menu = $manager->getRepository(Menu::class);
 
-        $adminMenu = new Menu('Partner', ':Admin:Partner:Partner', 'fa-diamond', $this->getReference('user-acl-operation-partner-edit'));
+        $adminMenu = new Menu('Partner', ':Admin:Partner:Partner', 'fa-diamond', $this->getReference('user-acl-operation-partner-edit', \Dravencms\Model\User\Entities\AclOperation::class));
 
         if ($parent = $menu->findOneBy(['name' => 'Site items']))
         {
