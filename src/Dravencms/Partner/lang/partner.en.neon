@@ -1,0 +1,39 @@
+admin:
+	field:
+		name: Name
+		description: Description
+		identifier: Identifier
+		url: URL
+		position: Position
+		active: Active
+		main: Main partner
+
+	action:
+		save: Save
+		edit: Edit
+		delete: Delete
+		exportAll: CSV export
+		exportFiltered: 'CSV export (filtered)'
+
+	title:
+		partners: Partners
+		newPartner: New partner
+		editPartner: Edit partner "%identifier%"
+
+	validation:
+		nameRequired: Please enter a partner name.
+		nameTooLong: The partner name must contain at most %d characters.
+		identifierRequired: Please enter an identifier.
+		identifierTaken: This identifier is already in use.
+		nameTaken: This name is already in use.
+		editForbidden: You do not have permission to edit partners.
+		positionInteger: Position must be an integer.
+		imageInteger: The image identifier must be an integer.
+
+	confirm:
+		delete: Are you sure you want to delete "%s"?
+
+	flash:
+		saved: The partner has been saved.
+		deleted: The partner has been deleted.
+

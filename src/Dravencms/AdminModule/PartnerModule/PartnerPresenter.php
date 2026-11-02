@@ -41,7 +41,7 @@ class PartnerPresenter extends SecuredPresenter
      */
     public function renderDefault(): void
     {
-        $this->template->h1 = 'Partners';
+        $this->template->h1 = $this->translator->translate('partner.admin.title.partners');
     }
 
     /**
@@ -60,9 +60,9 @@ class PartnerPresenter extends SecuredPresenter
 
             $this->partner = $partner;
 
-            $this->template->h1 = sprintf('Edit partner „%s“', $partner->getIdentifier());
+            $this->template->h1 = $this->translator->translate('partner.admin.title.editPartner', ['identifier' => $partner->getIdentifier()]);
         } else {
-            $this->template->h1 = 'New partner';
+            $this->template->h1 = $this->translator->translate('partner.admin.title.newPartner');
         }
     }
 
@@ -73,7 +73,7 @@ class PartnerPresenter extends SecuredPresenter
     {
         $control = $this->partnerFormFactory->create($this->partner);
         $control->onSuccess[] = function(){
-            $this->flashMessage('Partner has been successfully saved', Flash::SUCCESS);
+            $this->flashMessage($this->translator->translate('partner.admin.flash.saved'), Flash::SUCCESS);
             $this->redirect('Partner:');
         };
         return $control;
@@ -87,7 +87,7 @@ class PartnerPresenter extends SecuredPresenter
         $control = $this->partnerGridFactory->create();
         $control->onDelete[] = function()
         {
-            $this->flashMessage('Partner has been successfully deleted', Flash::SUCCESS);
+            $this->flashMessage($this->translator->translate('partner.admin.flash.deleted'), Flash::SUCCESS);
             $this->redirect('Partner:');
         };
         return $control;

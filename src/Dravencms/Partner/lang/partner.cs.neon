@@ -1,0 +1,39 @@
+admin:
+	field:
+		name: Název
+		description: Popis
+		identifier: Identifikátor
+		url: Odkaz
+		position: Pozice
+		active: Aktivní
+		main: Hlavní partner
+
+	action:
+		save: Uložit
+		edit: Upravit
+		delete: Smazat
+		exportAll: Exportovat CSV
+		exportFiltered: 'Exportovat CSV (filtrováno)'
+
+	title:
+		partners: Partneři
+		newPartner: Nový partner
+		editPartner: Upravit partnera „%identifier%“
+
+	validation:
+		nameRequired: Zadejte název partnera.
+		nameTooLong: Název partnera smí mít nejvýše %d znaků.
+		identifierRequired: Zadejte identifikátor.
+		identifierTaken: Tento identifikátor je již používán.
+		nameTaken: Tento název je již používán.
+		editForbidden: Nemáte oprávnění upravovat partnery.
+		positionInteger: Pozice musí být celé číslo.
+		imageInteger: Identifikátor obrázku musí být celé číslo.
+
+	confirm:
+		delete: Opravdu chcete smazat „%s“?
+
+	flash:
+		saved: Partner byl uložen.
+		deleted: Partner byl smazán.
+

@@ -95,7 +95,7 @@ class PartnerGrid extends BaseControl
 
         $grid->setDataSource($this->partnerRepository->getPartnerQueryBuilder());
         $grid->setDefaultSort(['position' => 'ASC']);
-        $grid->addColumnText('name', 'Name')
+        $grid->addColumnText('name', 'partner.admin.field.name')
             ->setAlign('center')
             ->setRenderer(function ($row) use($grid){
                 /** @var Partner $row */
@@ -116,33 +116,33 @@ class PartnerGrid extends BaseControl
             ->setFilterText();
 
 
-        $grid->addColumnBoolean('isActive', 'Active');
-        $grid->addColumnBoolean('isMain', 'Is main');
+        $grid->addColumnBoolean('isActive', 'partner.admin.field.active');
+        $grid->addColumnBoolean('isMain', 'partner.admin.field.main');
 
-        $grid->addColumnNumber('position', 'Position')
+        $grid->addColumnNumber('position', 'partner.admin.field.position')
             ->setAlign('center')
             ->setFilterRange();
 
         if ($this->user->isAllowed('partner', 'edit')) {
             $grid->addAction('edit', '')
                 ->setIcon('pencil')
-                ->setTitle('Upravit')
+                ->setTitle('partner.admin.action.edit')
                 ->setClass('btn btn-sm btn-primary');
         }
 
         if ($this->user->isAllowed('partner', 'delete')) {
             $grid->addAction('delete', '', 'delete!')
                 ->setIcon('trash')
-                ->setTitle('Smazat')
+                ->setTitle('partner.admin.action.delete')
                 ->setClass('btn btn-sm btn-danger ajax')
-                ->setConfirmation(new StringConfirmation('Do you really want to delete row %s?', 'identifier'));
-            $grid->addGroupAction('Smazat')->onSelect[] = [$this, 'handleDelete'];
+                ->setConfirmation(new StringConfirmation('partner.admin.confirm.delete', 'identifier'));
+            $grid->addGroupAction('partner.admin.action.delete')->onSelect[] = [$this, 'handleDelete'];
         }
 
-        $grid->addExportCsvFiltered('Csv export (filtered)', 'acl_resource_filtered.csv')
-            ->setTitle('Csv export (filtered)');
-        $grid->addExportCsv('Csv export', 'acl_resource_all.csv')
-            ->setTitle('Csv export');
+        $grid->addExportCsvFiltered('partner.admin.action.exportFiltered', 'acl_resource_filtered.csv')
+            ->setTitle('partner.admin.action.exportFiltered');
+        $grid->addExportCsv('partner.admin.action.exportAll', 'acl_resource_all.csv')
+            ->setTitle('partner.admin.action.exportAll');
 
         return $grid;
     }

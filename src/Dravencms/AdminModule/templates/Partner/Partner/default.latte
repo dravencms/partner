@@ -1,6 +1,6 @@
 {block #content}
     <p n:if="$user->isAllowed('partner', 'edit')">
-        <a n:href="Partner:edit" class="btn btn-primary"><i class="fa fa-plus"></i> {_"New partner"}</a>
+        <a n:href="Partner:edit" class="btn btn-primary"><i class="fa fa-plus"></i> {_"partner.admin.title.newPartner"}</a>
     </p>
     {control gridPartner}
 {/block}

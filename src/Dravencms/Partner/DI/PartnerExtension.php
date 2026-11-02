@@ -2,6 +2,7 @@
 
 namespace Dravencms\Partner\DI;
 
+use Contributte\Translation\DI\TranslationProviderInterface;
 use Dravencms\Partner\Partner;
 use Nette;
 use Salamek\Cms\DI\CmsExtension;
@@ -9,8 +10,12 @@ use Salamek\Cms\DI\CmsExtension;
  * Class PartnerExtension
  * @package Dravencms\Partner\DI
  */
-class PartnerExtension extends Nette\DI\CompilerExtension
+class PartnerExtension extends Nette\DI\CompilerExtension implements TranslationProviderInterface
 {
+    public function getTranslationResources(): array
+    {
+        return [__DIR__ . '/../lang'];
+    }
 
     public function loadConfiguration()
     {

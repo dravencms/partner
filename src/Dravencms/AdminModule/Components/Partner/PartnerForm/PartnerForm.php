@@ -123,25 +123,25 @@ class PartnerForm extends BaseControl
         foreach ($this->localeRepository->getActive() as $activeLocale) {
             $container = $form->addContainer($activeLocale->getLanguageCode());
             $container->addText('name')
-                ->setRequired('Please enter partner name.')
-                ->addRule(Form::MAX_LENGTH, 'Partner name is too long.', 255);
+                ->setRequired('partner.admin.validation.nameRequired')
+                ->addRule(Form::MAX_LENGTH, 'partner.admin.validation.nameTooLong', 255);
             $container->addTextArea('description');
         }
 
         $form->addText('identifier')
-            ->setRequired('Please enter identifier');
+            ->setRequired('partner.admin.validation.identifierRequired');
 
         $form->addText('url');
 
-        $form->addInteger('structureFile');
+        $form->addText('structureFile')->setNullable()->addRule(Form::INTEGER, 'partner.admin.validation.imageInteger');
 
-        $form->addInteger('position')
+        $form->addText('position')->setNullable()->addRule(Form::INTEGER, 'partner.admin.validation.positionInteger')
             ->setDisabled((is_null($this->partner)));
 
         $form->addCheckbox('isActive');
         $form->addCheckbox('isMain');
 
-        $form->addSubmit('send');
+        $form->addSubmit('send', 'partner.admin.action.save');
 
         $form->onValidate[] = [$this, 'editFormValidate'];
         $form->onSuccess[] = [$this, 'editFormSucceeded'];
@@ -182,18 +182,18 @@ class PartnerForm extends BaseControl
         $values = $form->getValues();
 
         if (!$this->partnerRepository->isIdentifierFree($values->identifier, $this->partner)) {
-            $form->addError('Tento identifier je již zabrán.');
+            $form->addError('partner.admin.validation.identifierTaken');
         }
 
 
         foreach ($this->localeRepository->getActive() as $activeLocale) {
             if (!$this->partnerTranslationRepository->isNameFree($values->{$activeLocale->getLanguageCode()}->name, $activeLocale, $this->partner)) {
-                $form->addError('Tento název je již zabrán.');
+                $form->addError('partner.admin.validation.nameTaken');
             }
         }
 
         if (!$this->user->isAllowed('partner', 'edit')) {
-            $form->addError('Nemáte oprávění editovat article.');
+            $form->addError('partner.admin.validation.editForbidden');
         }
     }
 
