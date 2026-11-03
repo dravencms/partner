@@ -92,6 +92,7 @@ class PartnerGrid extends BaseControl
     public function createComponentGrid(string $name): Grid
     {
         $grid = $this->baseGridFactory->create($this, $name);
+        $grid->setWritePermission('partner', 'edit');
 
         $grid->setDataSource($this->partnerRepository->getPartnerQueryBuilder());
         $grid->setDefaultSort(['position' => 'ASC']);
@@ -151,8 +152,11 @@ class PartnerGrid extends BaseControl
      * @param $id
      * @throws \Exception
      */
+    #[\Dravencms\User\Attributes\IsAllowed('partner', 'delete')]
+    #[\Dravencms\Security\Mutation]
     public function handleDelete($id): void
     {
+        $this->requirePermission('partner', 'delete');
         $partners = $this->partnerRepository->getById($id);
         foreach ($partners AS $partner)
         {

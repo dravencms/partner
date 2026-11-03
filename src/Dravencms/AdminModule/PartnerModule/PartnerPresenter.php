@@ -21,6 +21,7 @@ use Dravencms\Model\Partner\Repository\PartnerRepository;
  *
  * @author Adam Schubert
  */
+#[\Dravencms\User\Attributes\IsAllowed('partner', 'edit')]
 class PartnerPresenter extends SecuredPresenter
 {
 
@@ -39,6 +40,7 @@ class PartnerPresenter extends SecuredPresenter
     /**
      * @isAllowed(partner,edit)
      */
+    #[\Dravencms\User\Attributes\IsAllowed('partner', 'edit')]
     public function renderDefault(): void
     {
         $this->template->h1 = $this->translator->translate('partner.admin.title.partners');
@@ -49,6 +51,7 @@ class PartnerPresenter extends SecuredPresenter
      * @param $id
      * @throws \Nette\Application\BadRequestException
      */
+    #[\Dravencms\User\Attributes\IsAllowed('partner', 'edit')]
     public function actionEdit(?int $id = null): void
     {
         if ($id) {

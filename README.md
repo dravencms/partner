@@ -8,7 +8,7 @@ Partner/logo administration and frontend presentation for DravenCMS. Partner rec
 - Ordered and active partner records.
 - Overview, main, and bar frontend components.
 - CMS component integration through DravenCMS Structure.
-- Admin menu and ACL fixtures.
+- Provider-defined admin navigation and ACL permissions.
 
 ## Installation
 
@@ -16,7 +16,7 @@ Partner/logo administration and frontend presentation for DravenCMS. Partner rec
 composer require dravencms/partner
 ```
 
-The package loader registers the extension, admin presenter, component factories, repositories, fixtures, and Doctrine mappings. Apply the package schema and load fixtures through the application's normal workflow.
+The package loader registers the extension, admin presenter, component factories, repositories, and Doctrine mappings. Apply the package schema through the application's normal workflow; assign provider-defined permissions through the group editor.
 
 ## Frontend Integration
 
@@ -33,3 +33,7 @@ Partner images are managed through `dravencms/file`, and classifications use `dr
 ## License
 
 This package is licensed under the LGPL-3.0 license.
+
+## Admin authorization and mutations
+
+Administration uses User 3.1, Admin 3.2 and Application 0.3 guards. Screens and write callbacks enforce the existing provider-defined permissions server-side, including direct URLs and bulk callbacks. Mutating signals require POST and a session-bound action token; synchronize the matching admin assets when upgrading. See the User package's `user:security:migrate` instructions for the password-reset schema change.

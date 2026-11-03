@@ -203,6 +203,7 @@ class PartnerForm extends BaseControl
      */
     public function editFormSucceeded(Form $form): void
     {
+        $this->requirePermission('partner', 'edit');
         $values = $form->getValues();
 
         if ($values->structureFile)
