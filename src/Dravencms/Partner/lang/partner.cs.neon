@@ -37,3 +37,6 @@ admin:
 		saved: Partner byl uložen.
 		deleted: Partner byl smazán.
 
+
+menu:
+    overview: 'Partneři'

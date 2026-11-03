@@ -37,3 +37,6 @@ admin:
 		saved: The partner has been saved.
 		deleted: The partner has been deleted.
 
+
+menu:
+    overview: 'Partners'
