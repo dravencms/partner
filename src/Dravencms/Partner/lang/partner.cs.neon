@@ -40,3 +40,11 @@ admin:
 
 menu:
     overview: 'Partneři'
+
+acl:
+    resource: 'Partneři'
+    permissions:
+        edit:
+            label: 'Spravovat partnery'
+        delete:
+            label: 'Mazat partnery'

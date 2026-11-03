@@ -40,3 +40,11 @@ admin:
 
 menu:
     overview: 'Partners'
+
+acl:
+    resource: 'Partners'
+    permissions:
+        edit:
+            label: 'Manage partners'
+        delete:
+            label: 'Delete partners'
