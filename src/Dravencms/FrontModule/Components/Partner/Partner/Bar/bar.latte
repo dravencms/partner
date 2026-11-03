@@ -6,7 +6,7 @@
                 <ul class="logos">
                     <li n:foreach="$block as $item" class="col-md-2 col-sm-2 col-xs-4">
                         {if $item->getUrl()}<a href="{$item->getUrl()}">{/if}
-                            <img class="img-responsive" n:img="$item->getStructureFile(), '100x100', 'fit_exact'"  alt="{$item->getName()}" />
+                            <img class="img-responsive" n:img="\Salamek\Files\Access\FileReference::attachment('partner.image', $item->getId(), $item->getStructureFile()), '100x100', 'fit_exact'"  alt="{$item->getName()}" />
                         {if $item->getUrl()}</a>{/if}
                     </li>
                 </ul><!--//slides-->

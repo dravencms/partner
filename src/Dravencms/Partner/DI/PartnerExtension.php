@@ -20,6 +20,7 @@ class PartnerExtension extends Nette\DI\CompilerExtension implements Translation
     public function loadConfiguration()
     {
         $builder = $this->getContainerBuilder();
+        $builder->addDefinition($this->prefix('files.PartnerFileProvider'))->setFactory(\Dravencms\Partner\Access\PartnerFileProvider::class);
         if ($this->compiler->getExtensions(\Dravencms\User\DI\UserExtension::class) !== []) {
             $builder->addDefinition($this->prefix('aclProvider'))->setFactory(\Dravencms\Partner\AclProvider::class);
         }

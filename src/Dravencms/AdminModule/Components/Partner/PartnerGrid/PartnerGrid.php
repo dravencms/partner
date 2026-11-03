@@ -102,7 +102,7 @@ class PartnerGrid extends BaseControl
                 /** @var Partner $row */
                 if ($haveImage = $row->getStructureFile()) {
                     $img = Html::el('img');
-                    $img->src = $this->imagePipe->request($haveImage->getFile(), '200x');
+                    $img->src = $this->imagePipe->request(\Salamek\Files\Access\FileReference::attachment('partner.image', $row->getId(), $haveImage), '200x');
                 } else {
                     $img = '';
                 }
