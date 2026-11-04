@@ -2,11 +2,11 @@
 namespace Dravencms\Partner\Access;
 use Salamek\Files\Access\{IFileAccessProvider, FileAccess};
 use Dravencms\Model\Partner\Repository\PartnerRepository;
-use Nette\Security\User;
+use Dravencms\File\Access\AdminFileAccess;
 
 final class PartnerFileProvider implements IFileAccessProvider
 {
-    public function __construct(private PartnerRepository $repository, private User $user) {}
+    public function __construct(private PartnerRepository $repository, private AdminFileAccess $user) {}
     public static function getId(): string { return 'partner.image'; }
     public function resolve(string $reference): ?FileAccess
     {
