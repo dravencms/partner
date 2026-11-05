@@ -28,7 +28,6 @@ use Dravencms\File\File;
 use Dravencms\Model\Partner\Entities\Partner;
 use Dravencms\Model\Partner\Entities\PartnerTranslation;
 use Dravencms\Model\Partner\Repository\PartnerRepository;
-use Dravencms\Model\File\Repository\StructureFileRepository;
 use Dravencms\Model\Partner\Repository\PartnerTranslationRepository;
 use Dravencms\Database\EntityManager;
 use Dravencms\Components\BaseForm\Form;
@@ -52,9 +51,6 @@ class PartnerForm extends BaseControl
 
     /** @var PartnerTranslationRepository */
     private $partnerTranslationRepository;
-
-    /** @var StructureFileRepository */
-    private $structureFileRepository;
 
     /** @var LocaleRepository */
     private $localeRepository;
@@ -80,7 +76,6 @@ class PartnerForm extends BaseControl
      * @param EntityManager $entityManager
      * @param PartnerRepository $partnerRepository
      * @param PartnerTranslationRepository $partnerTranslationRepository
-     * @param StructureFileRepository $structureFileRepository
      * @param LocaleRepository $localeRepository
      * @param CurrentLocaleResolver $currentLocaleResolver
      * @param File $file
@@ -92,7 +87,6 @@ class PartnerForm extends BaseControl
         EntityManager $entityManager,
         PartnerRepository $partnerRepository,
         PartnerTranslationRepository $partnerTranslationRepository,
-        StructureFileRepository $structureFileRepository,
         LocaleRepository $localeRepository,
         CurrentLocaleResolver $currentLocaleResolver,
         File $file,
@@ -105,7 +99,6 @@ class PartnerForm extends BaseControl
         $this->entityManager = $entityManager;
         $this->partnerRepository = $partnerRepository;
         $this->partnerTranslationRepository = $partnerTranslationRepository;
-        $this->structureFileRepository = $structureFileRepository;
         $this->currentLocale = $currentLocaleResolver->getCurrentLocale();
         $this->localeRepository = $localeRepository;
         $this->file = $file;
@@ -133,7 +126,7 @@ class PartnerForm extends BaseControl
 
         $form->addText('url');
 
-        $form->addText('structureFile')->setNullable()->addRule(Form::INTEGER, 'partner.admin.validation.imageInteger');
+        $this->file->addSelector($form, 'structureFile', 'file.selectImage', \Salamek\Files\Models\IFile::TYPE_IMAGE, false)->setExistingFile($this->partner?->getStructureFile());
 
         $form->addText('position')->setNullable()->addRule(Form::INTEGER, 'partner.admin.validation.positionInteger')
             ->setDisabled((is_null($this->partner)));
@@ -205,14 +198,7 @@ class PartnerForm extends BaseControl
     {
         $values = $form->getValues();
 
-        if ($values->structureFile)
-        {
-            $structureFile = $this->structureFileRepository->getOneById($values->structureFile);
-        }
-        else
-        {
-            $structureFile = null;
-        }
+        $structureFile = $values->structureFile->file;
 
         if ($this->partner) {
             $partner = $this->partner;
@@ -261,7 +247,7 @@ class PartnerForm extends BaseControl
     public function render()
     {
         $template = $this->template;
-        $template->fileSelectorPath = $this->file->getFileSelectorPath();
+
         $template->activeLocales = $this->localeRepository->getActive();
         $template->setFile(__DIR__ . '/PartnerForm.latte');
         $template->render();
