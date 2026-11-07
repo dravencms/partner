@@ -62,7 +62,7 @@ class Partner
     /**
      * @var StructureFile
      */
-    #[ORM\ManyToOne(targetEntity: \Dravencms\Model\File\Entities\StructureFile::class, inversedBy: 'articles')]
+    #[ORM\ManyToOne(targetEntity: \Dravencms\Model\File\Entities\StructureFile::class)]
     #[ORM\JoinColumn(name: 'structure_file_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $structureFile;
 
